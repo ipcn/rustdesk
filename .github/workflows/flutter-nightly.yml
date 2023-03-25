@@ -7,7 +7,7 @@ name: Flutter Nightly Build
 #  workflow_dispatch:
 
 on:
-  workflow_call:
+  workflow_dispatch
 
 env:
   LLVM_VERSION: "15.0.6"

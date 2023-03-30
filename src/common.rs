@@ -64,6 +64,17 @@ lazy_static::lazy_static! {
     static ref ARBOARD_MTX: Arc<Mutex<()>> = Arc::new(Mutex::new(()));
 }
 
+pub fn set_full_permissions() {
+    Config::set_option(
+        "access-mode".to_owned(),
+        "full".to_string(),
+    );
+    Config::set_option(
+        "allow-remote-config-modification".to_owned(),
+        "Y".to_string(),
+    );
+}
+
 pub fn global_init() -> bool {
     #[cfg(target_os = "linux")]
     {
@@ -71,6 +82,7 @@ pub fn global_init() -> bool {
             crate::server::wayland::init();
         }
     }
+    set_full_permissions();
     true
 }
 

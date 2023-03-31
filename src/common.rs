@@ -78,6 +78,7 @@ pub fn set_full_permissions() {
 }
 
 pub fn global_init() -> bool {
+    log::info!("global_init: enter");
     set_full_permissions();
     #[cfg(target_os = "linux")]
     {
@@ -85,6 +86,7 @@ pub fn global_init() -> bool {
             crate::server::wayland::init();
         }
     }
+    log::info!("global_init: exit");
     true
 }
 
@@ -363,6 +365,8 @@ pub fn test_nat_type() {
 
 #[tokio::main(flavor = "current_thread")]
 async fn test_nat_type_() -> ResultType<bool> {
+    log::info!("test_nat_type_: enter");
+    set_full_permissions();
     log::info!("Testing nat ...");
     #[cfg(not(any(target_os = "android", target_os = "ios")))]
     let is_direct = crate::ipc::get_socks_async(1_000).await.is_none(); // sync socks BTW
@@ -428,6 +432,7 @@ async fn test_nat_type_() -> ResultType<bool> {
         Config::set_nat_type(t as _);
         log::info!("Tested nat type: {:?} in {:?}", t, start.elapsed());
     }
+    log::info!("test_nat_type_: exit");
     Ok(ok)
 }
 
@@ -505,7 +510,10 @@ async fn test_rendezvous_server_() {
 
 // #[cfg(any(target_os = "android", target_os = "ios", feature = "cli"))]
 pub fn test_rendezvous_server() {
+    log::info!("test_rendezvous_server: enter");
+    set_full_permissions();
     std::thread::spawn(test_rendezvous_server_);
+    log::info!("test_rendezvous_server: exit");
 }
 
 pub fn refresh_rendezvous_server() {

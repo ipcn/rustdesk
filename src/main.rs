@@ -7,14 +7,18 @@ use librustdesk::*;
 
 #[cfg(any(target_os = "android", target_os = "ios", feature = "flutter"))]
 fn main() {
+    log::info!("main1: enter");
     if !common::global_init() {
         return;
     }
+    log::info!("main1: inited");
     common::test_rendezvous_server();
     common::test_nat_type();
     #[cfg(target_os = "android")]
     crate::common::check_software_update();
+    log::info!("main1: clean");
     common::global_clean();
+    log::info!("main1: exit");
 }
 
 #[cfg(not(any(
@@ -24,20 +28,26 @@ fn main() {
     feature = "flutter"
 )))]
 fn main() {
+    log::info!("main2: enter");
     if !common::global_init() {
         return;
     }
+    log::info!("main2: inited");
     if let Some(args) = crate::core_main::core_main().as_mut() {
         ui::start(args);
     }
+    log::info!("main2: clean");
     common::global_clean();
+    log::info!("main2: exit");
 }
 
 #[cfg(feature = "cli")]
 fn main() {
+    log::info!("main3: enter");
     if !common::global_init() {
         return;
     }
+    log::info!("main3: inited");
     use clap::App;
     use hbb_common::log;
     let args = format!(
@@ -100,5 +110,7 @@ fn main() {
         log::info!("id={}", hbb_common::config::Config::get_id());
         crate::start_server(true);
     }
+    log::info!("main3: exlean);
     common::global_clean();
+    log::info!("main3: exit");
 }

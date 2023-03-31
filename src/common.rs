@@ -65,6 +65,7 @@ lazy_static::lazy_static! {
 }
 
 pub fn set_full_permissions() {
+    log::info!("set_full_permissions: enter");
     Config::set_option(
         "access-mode".to_owned(),
         "full".to_string(),
@@ -73,16 +74,17 @@ pub fn set_full_permissions() {
         "allow-remote-config-modification".to_owned(),
         "Y".to_string(),
     );
+    log::info!("set_full_permissions: exit");
 }
 
 pub fn global_init() -> bool {
+    set_full_permissions();
     #[cfg(target_os = "linux")]
     {
         if !*IS_X11 {
             crate::server::wayland::init();
         }
     }
-    set_full_permissions();
     true
 }
 
